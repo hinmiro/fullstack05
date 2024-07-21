@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Blog from "./components/Blog";
 import loginService from "./services/login";
 import blogService from "./services/blogs";
-import blog from "./components/Blog";
+import Notification from "./components/Notification.jsx";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -12,6 +12,8 @@ const App = () => {
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
   const [user, setUser] = useState(null);
+  const [message, setMessage] = useState(null);
+  const [red, setRed] = useState(false);
 
   useEffect(() => {
     if (user && user.blogs) {
@@ -37,8 +39,18 @@ const App = () => {
       setUser(newUser);
       setUsername("");
       setPassword("");
+      setMessage("Logged in");
+      setTimeout(() => {
+        setMessage(null);
+      }, 3000);
     } catch (exception) {
       console.log(exception.message);
+      setRed(true);
+      setMessage("Username or password is wrong");
+      setTimeout(() => {
+        setMessage(null);
+        setRed(false);
+      }, 3000);
     }
   };
 
@@ -52,10 +64,7 @@ const App = () => {
     evt.preventDefault();
     try {
       const newBlog = { title: title, author: author, url: url };
-      const createdBlog = await blogService.createNewBlog(
-        newBlog,
-        window.localStorage.getItem("token"),
-      );
+      const createdBlog = await blogService.createNewBlog(newBlog);
       const newBlogs = blogs.concat(createdBlog);
       const updatedUser = { ...user, blogs: newBlogs };
       setBlogs(newBlogs);
@@ -64,8 +73,17 @@ const App = () => {
       setTitle("");
       setAuthor("");
       setUrl("");
+      setMessage(`New blog created, ${newBlog.title}`);
+      setTimeout(() => {
+        setMessage(null);
+      }, 3000);
     } catch (err) {
-      console.log(err.message);
+      setMessage("Error occurred making a new blog");
+      setRed(true);
+      setTimeout(() => {
+        setMessage(null);
+        setRed(false);
+      }, 3000);
     }
   };
 
@@ -148,6 +166,7 @@ const App = () => {
   return (
     <div>
       <h1>blogApp 1.0</h1>
+      <Notification message={message} red={red} />
       <br />
       <br />
       {!user && loginForm()}
