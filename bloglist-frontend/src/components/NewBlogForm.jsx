@@ -5,7 +5,15 @@ const NewBlogForm = (props) => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
-  const { blogs, setBlogs, user, setUser, setMessage, setRed } = props;
+  const {
+    blogs,
+    setBlogs,
+    user,
+    setUser,
+    setMessage,
+    setRed,
+    toggleVisibility,
+  } = props;
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("appUser");
@@ -30,6 +38,7 @@ const NewBlogForm = (props) => {
       setAuthor("");
       setUrl("");
       setMessage(`New blog created, ${newBlog.title}`);
+      toggleVisibility();
       setTimeout(() => {
         setMessage(null);
       }, 3000);
@@ -45,6 +54,8 @@ const NewBlogForm = (props) => {
 
   return (
     <>
+      <br />
+      <br />
       <h3>Create new blog</h3>
       <form onSubmit={handleBlogCreate}>
         <div>
