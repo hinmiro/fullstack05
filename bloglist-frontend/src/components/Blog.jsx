@@ -1,11 +1,18 @@
 import ShowButton from "./ShowButton.jsx";
 import { useState } from "react";
+import LikeButton from "./LikeButton.jsx";
+import blogService from "../services/blogs";
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, updateBlog }) => {
   const [showDetails, setShowDetails] = useState(false);
 
   const handleShowDetails = () => {
     setShowDetails(!showDetails);
+  };
+
+  const handleLikes = async () => {
+    const updatedBlog = await blogService.addLike(blog);
+    updateBlog(updatedBlog);
   };
 
   return (
@@ -25,8 +32,8 @@ const Blog = ({ blog }) => {
             </tr>
             <tr>
               <td>
-                Likes: {blog.likes ? blog.likes : 0}
-                <button>like</button>
+                Likes: {blog.likes !== undefined ? blog.likes : 0}
+                <LikeButton handleLikes={handleLikes}>like</LikeButton>
               </td>
             </tr>
             <tr>

@@ -1,11 +1,18 @@
 import Blog from "./Blog.jsx";
 
-const BlogForm = ({ user, setUser, blogs }) => {
+const BlogForm = ({ user, setUser, blogs, setBlogs }) => {
   const handleLogout = (evt) => {
     evt.preventDefault();
     window.localStorage.clear();
     setUser(null);
   };
+
+  const updateBlog = (updatedBlog) => {
+    setBlogs(
+      blogs.map((blog) => (blog.id === updatedBlog.id ? updatedBlog : blog)),
+    );
+  };
+
   return (
     <>
       <p>
@@ -14,7 +21,7 @@ const BlogForm = ({ user, setUser, blogs }) => {
       <br />
       <br />
       {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} updateBlog={updateBlog} />
       ))}
     </>
   );

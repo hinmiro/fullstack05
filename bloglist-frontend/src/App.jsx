@@ -14,21 +14,24 @@ const App = () => {
 
   useEffect(() => {
     const loggedUser = window.localStorage.getItem("appUser");
-    if (loggedUser) {
-      const parseUser = JSON.parse(loggedUser);
-      setUser(parseUser);
-      if (parseUser.blogs.length > 0) {
-        const filteredBlogs = parseUser.blogs.filter((blog) => blog != null);
-        setBlogs(filteredBlogs);
-      }
-    }
+    const parseUser = JSON.parse(loggedUser);
+    setUser(parseUser);
+    const filteredBlogs = parseUser.blogs.filter((blog) => blog != null);
+    setBlogs(filteredBlogs);
   }, []);
 
   return (
     <div>
       <Notification message={message} red={red} />
       <h1>blogApp 1.0</h1>
-      {user && <BlogForm user={user} setUser={setUser} blogs={blogs} />}
+      {user && (
+        <BlogForm
+          user={user}
+          setUser={setUser}
+          blogs={blogs}
+          setBlogs={setBlogs}
+        />
+      )}
       <br />
       <br />
       {user && (
