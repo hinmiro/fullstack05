@@ -11,6 +11,8 @@ const BlogForm = ({ user, setUser, blogs }) => {
       <p>
         {user.username} logged in <button onClick={handleLogout}>Logout</button>
       </p>
+      <br />
+      <br />
       {blogs.map((blog) => (
         <Blog key={blog.id} blog={blog} />
       ))}

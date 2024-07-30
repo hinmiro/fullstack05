@@ -17,25 +17,20 @@ const App = () => {
     if (loggedUser) {
       const parseUser = JSON.parse(loggedUser);
       setUser(parseUser);
-      const filteredBlogs = parseUser.blogs.filter((blog) => blog != null);
-      setBlogs(filteredBlogs);
-    } else {
-      setUser(user);
-      const filteredBlogs = user.blogs.filter((blog) => blog != null);
-      setBlogs(filteredBlogs);
+      if (parseUser.blogs.length > 0) {
+        const filteredBlogs = parseUser.blogs.filter((blog) => blog != null);
+        setBlogs(filteredBlogs);
+      }
     }
   }, []);
 
   return (
     <div>
-      <h1>blogApp 1.0</h1>
       <Notification message={message} red={red} />
-      <br />
-      <br />
-      {!user && (
-        <LoginForm setUser={setUser} setMessage={setMessage} setRed={setRed} />
-      )}
+      <h1>blogApp 1.0</h1>
       {user && <BlogForm user={user} setUser={setUser} blogs={blogs} />}
+      <br />
+      <br />
       {user && (
         <Toggleable buttonLabel={"new blog"} ref={toggleableFromRef}>
           <NewBlogForm
@@ -50,6 +45,10 @@ const App = () => {
             }
           />
         </Toggleable>
+      )}
+
+      {!user && (
+        <LoginForm setUser={setUser} setMessage={setMessage} setRed={setRed} />
       )}
     </div>
   );
