@@ -15,9 +15,14 @@ const App = () => {
   useEffect(() => {
     const loggedUser = window.localStorage.getItem("appUser");
     const parseUser = JSON.parse(loggedUser);
+    if (parseUser === null) {
+      return;
+    }
     setUser(parseUser);
     const filteredBlogs = parseUser.blogs.filter((blog) => blog != null);
-    setBlogs(filteredBlogs);
+    const sortedBlogs = [...filteredBlogs].sort((a, b) => b.likes - a.likes);
+    sortedBlogs.map((blog) => console.log(blog.likes));
+    setBlogs(sortedBlogs);
   }, []);
 
   return (
