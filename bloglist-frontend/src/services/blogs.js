@@ -1,4 +1,5 @@
 import axios from "axios";
+
 const baseUrl = "/api/blogs";
 
 let token = null;
@@ -35,6 +36,14 @@ const addLike = async (blog) => {
   return req.data;
 };
 
+const deleteBlog = async (id) => {
+  const conf = {
+    headers: { Authorization: token },
+  };
+  const req = await axios.delete(baseUrl + `/${id}`, conf);
+  return req.data;
+};
+
 export default {
   getAll,
   getUserBlogs,
@@ -42,4 +51,5 @@ export default {
   setToken,
   createNewBlog,
   addLike,
+  deleteBlog,
 };

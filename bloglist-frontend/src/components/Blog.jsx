@@ -2,8 +2,9 @@ import ShowButton from "./ShowButton.jsx";
 import { useState } from "react";
 import LikeButton from "./LikeButton.jsx";
 import blogService from "../services/blogs";
+import DeleteButton from "./DeleteButton.jsx";
 
-const Blog = ({ blog, updateBlog }) => {
+const Blog = ({ blog, updateBlog, removeBlog }) => {
   const [showDetails, setShowDetails] = useState(false);
 
   const handleShowDetails = () => {
@@ -13,6 +14,17 @@ const Blog = ({ blog, updateBlog }) => {
   const handleLikes = async () => {
     const updatedBlog = await blogService.addLike(blog);
     updateBlog(updatedBlog);
+  };
+
+  const handleDelete = async () => {
+    const confirmation = window.confirm(`Remove blog: ${blog.title}`);
+    if (!confirmation) return;
+    try {
+      await blogService.deleteBlog(blog.id);
+      removeBlog(blog.id);
+    } catch (err) {
+      console.log("Error occurred: ", err.message);
+    }
   };
 
   return (
@@ -38,6 +50,11 @@ const Blog = ({ blog, updateBlog }) => {
             </tr>
             <tr>
               <td>URl: {blog.url}</td>
+            </tr>
+            <tr>
+              <td>
+                <DeleteButton handleDelete={handleDelete} text={"remove"} />
+              </td>
             </tr>
           </tbody>
         </table>

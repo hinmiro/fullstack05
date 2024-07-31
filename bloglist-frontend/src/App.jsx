@@ -21,7 +21,6 @@ const App = () => {
     setUser(parseUser);
     const filteredBlogs = parseUser.blogs.filter((blog) => blog != null);
     const sortedBlogs = [...filteredBlogs].sort((a, b) => b.likes - a.likes);
-    sortedBlogs.map((blog) => console.log(blog.likes));
     setBlogs(sortedBlogs);
   }, []);
 
