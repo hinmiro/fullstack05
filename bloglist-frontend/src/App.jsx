@@ -4,6 +4,7 @@ import NewBlogForm from "./components/NewBlogForm.jsx";
 import LoginForm from "./components/LoginForm.jsx";
 import BlogForm from "./components/BlogForm.jsx";
 import Toggleable from "./components/Toggleable.jsx";
+import blogService from "./services/blogs.js";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -13,15 +14,19 @@ const App = () => {
   const toggleableFromRef = useRef();
 
   useEffect(() => {
+    const fetchBlogs = async () => {
+      const response = await blogService.getAll();
+      const sortedBlogs = [...response].sort((a, b) => b.likes - a.likes);
+      setBlogs(sortedBlogs);
+    };
+    fetchBlogs();
+
     const loggedUser = window.localStorage.getItem("appUser");
     const parseUser = JSON.parse(loggedUser);
     if (parseUser === null) {
       return;
     }
     setUser(parseUser);
-    const filteredBlogs = parseUser.blogs.filter((blog) => blog != null);
-    const sortedBlogs = [...filteredBlogs].sort((a, b) => b.likes - a.likes);
-    setBlogs(sortedBlogs);
   }, []);
 
   return (

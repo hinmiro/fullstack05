@@ -4,7 +4,7 @@ import LikeButton from "./LikeButton.jsx";
 import blogService from "../services/blogs";
 import DeleteButton from "./DeleteButton.jsx";
 
-const Blog = ({ blog, updateBlog, removeBlog }) => {
+const Blog = ({ blog, updateBlog, removeBlog, user }) => {
   const [showDetails, setShowDetails] = useState(false);
 
   const handleShowDetails = () => {
@@ -13,6 +13,7 @@ const Blog = ({ blog, updateBlog, removeBlog }) => {
 
   const handleLikes = async () => {
     const updatedBlog = await blogService.addLike(blog);
+    updatedBlog.user = blog.user;
     updateBlog(updatedBlog);
   };
 
@@ -51,11 +52,14 @@ const Blog = ({ blog, updateBlog, removeBlog }) => {
             <tr>
               <td>URl: {blog.url}</td>
             </tr>
-            <tr>
-              <td>
-                <DeleteButton handleDelete={handleDelete} text={"remove"} />
-              </td>
-            </tr>
+            {blog.user.id ===
+              JSON.parse(window.localStorage.getItem("appUser")).id && (
+              <tr>
+                <td>
+                  <DeleteButton handleDelete={handleDelete} text={"remove"} />
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       )}

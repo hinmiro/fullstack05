@@ -1,4 +1,6 @@
 import Blog from "./Blog.jsx";
+import blog from "./Blog.jsx";
+import DeleteButton from "./DeleteButton.jsx";
 
 const BlogForm = ({ user, setUser, blogs, setBlogs }) => {
   const handleLogout = (evt) => {
@@ -11,7 +13,6 @@ const BlogForm = ({ user, setUser, blogs, setBlogs }) => {
     const updatedBlogs = blogs
       .map((blog) => (blog.id === updatedBlog.id ? updatedBlog : blog))
       .sort((a, b) => b.likes - a.likes);
-    console.log(updatedBlogs);
     setBlogs(updatedBlogs);
     const updatedUser = { ...user, blogs: updatedBlogs };
     setUser(updatedUser);
@@ -41,6 +42,7 @@ const BlogForm = ({ user, setUser, blogs, setBlogs }) => {
           blog={blog}
           updateBlog={updateBlog}
           removeBlog={removeBlog}
+          user={user}
         />
       ))}
     </>

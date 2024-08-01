@@ -1,7 +1,9 @@
 const DeleteButton = ({ handleDelete, text }) => {
   return (
     <>
-      <button onClick={handleDelete}>{text}</button>
+      <button style={{ backgroundColor: "salmon" }} onClick={handleDelete}>
+        {text}
+      </button>
     </>
   );
 };
