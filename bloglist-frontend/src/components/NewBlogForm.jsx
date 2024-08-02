@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
-import blogService from "../services/blogs.js";
+import { useEffect, useState } from 'react'
+import blogService from '../services/blogs.js'
 
 const NewBlogForm = (props) => {
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
-  const [url, setUrl] = useState("");
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [url, setUrl] = useState('')
   const {
     blogs,
     setBlogs,
@@ -13,44 +13,44 @@ const NewBlogForm = (props) => {
     setMessage,
     setRed,
     toggleVisibility,
-  } = props;
+  } = props
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem("appUser");
+    const loggedUserJSON = window.localStorage.getItem('appUser')
     if (loggedUserJSON) {
-      const loggedUser = JSON.parse(loggedUserJSON);
-      setUser(loggedUser);
-      blogService.setToken(loggedUser.token);
+      const loggedUser = JSON.parse(loggedUserJSON)
+      setUser(loggedUser)
+      blogService.setToken(loggedUser.token)
     }
-  }, []);
+  }, [setUser])
 
   const handleBlogCreate = async (evt) => {
-    evt.preventDefault();
+    evt.preventDefault()
     try {
-      const newBlog = { title: title, author: author, url: url };
-      const createdBlog = await blogService.createNewBlog(newBlog);
-      const newBlogs = blogs.concat(createdBlog);
-      const updatedUser = { ...user, blogs: newBlogs };
-      setBlogs(newBlogs);
-      setUser(updatedUser);
-      window.localStorage.setItem("appUser", JSON.stringify(updatedUser));
-      setTitle("");
-      setAuthor("");
-      setUrl("");
-      setMessage(`New blog created, ${newBlog.title}`);
-      toggleVisibility();
+      const newBlog = { title: title, author: author, url: url }
+      const createdBlog = await blogService.createNewBlog(newBlog)
+      const newBlogs = blogs.concat(createdBlog)
+      const updatedUser = { ...user, blogs: newBlogs }
+      setBlogs(newBlogs)
+      setUser(updatedUser)
+      window.localStorage.setItem('appUser', JSON.stringify(updatedUser))
+      setTitle('')
+      setAuthor('')
+      setUrl('')
+      setMessage(`New blog created, ${newBlog.title}`)
+      toggleVisibility()
       setTimeout(() => {
-        setMessage(null);
-      }, 3000);
+        setMessage(null)
+      }, 3000)
     } catch (err) {
-      setMessage("Error occurred making a new blog");
-      setRed(true);
+      setMessage('Error occurred making a new blog')
+      setRed(true)
       setTimeout(() => {
-        setMessage(null);
-        setRed(false);
-      }, 3000);
+        setMessage(null)
+        setRed(false)
+      }, 3000)
     }
-  };
+  }
 
   return (
     <>
@@ -61,7 +61,7 @@ const NewBlogForm = (props) => {
         <div>
           Title:
           <input
-            type={"text"}
+            type={'text'}
             value={title}
             onChange={({ target }) => setTitle(target.value)}
           />
@@ -69,7 +69,7 @@ const NewBlogForm = (props) => {
         <div>
           Author:
           <input
-            type={"text"}
+            type={'text'}
             value={author}
             onChange={({ target }) => setAuthor(target.value)}
           />
@@ -77,15 +77,15 @@ const NewBlogForm = (props) => {
         <div>
           Url:
           <input
-            type={"text"}
+            type={'text'}
             value={url}
             onChange={({ target }) => setUrl(target.value)}
           />
         </div>
-        <button type={"submit"}>Create</button>
+        <button type={'submit'}>Create</button>
       </form>
     </>
-  );
-};
+  )
+}
 
-export default NewBlogForm;
+export default NewBlogForm

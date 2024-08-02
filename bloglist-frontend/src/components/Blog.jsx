@@ -1,39 +1,39 @@
-import ShowButton from "./ShowButton.jsx";
-import { useState } from "react";
-import LikeButton from "./LikeButton.jsx";
-import blogService from "../services/blogs";
-import DeleteButton from "./DeleteButton.jsx";
+import ShowButton from './ShowButton.jsx'
+import { useState } from 'react'
+import LikeButton from './LikeButton.jsx'
+import blogService from '../services/blogs'
+import DeleteButton from './DeleteButton.jsx'
 
 const Blog = ({ blog, updateBlog, removeBlog, user }) => {
-  const [showDetails, setShowDetails] = useState(false);
+  const [showDetails, setShowDetails] = useState(false)
 
   const handleShowDetails = () => {
-    setShowDetails(!showDetails);
-  };
+    setShowDetails(!showDetails)
+  }
 
   const handleLikes = async () => {
-    const updatedBlog = await blogService.addLike(blog);
-    updatedBlog.user = blog.user;
-    updateBlog(updatedBlog);
-  };
+    const updatedBlog = await blogService.addLike(blog)
+    updatedBlog.user = blog.user
+    updateBlog(updatedBlog)
+  }
 
   const handleDelete = async () => {
-    const confirmation = window.confirm(`Remove blog: ${blog.title}`);
-    if (!confirmation) return;
+    const confirmation = window.confirm(`Remove blog: ${blog.title}`)
+    if (!confirmation) return
     try {
-      await blogService.deleteBlog(blog.id);
-      removeBlog(blog.id);
+      await blogService.deleteBlog(blog.id)
+      removeBlog(blog.id)
     } catch (err) {
-      console.log("Error occurred: ", err.message);
+      console.log('Error occurred: ', err.message)
     }
-  };
+  }
 
   return (
     <div
-      style={{ border: "solid", borderWidth: 1, padding: 10, width: "10rem" }}
+      style={{ border: 'solid', borderWidth: 1, padding: 10, width: '10rem' }}
     >
       {blog.title}
-      <ShowButton handleClick={handleShowDetails} text={"more"} />
+      <ShowButton handleClick={handleShowDetails} text={'more'} />
       {showDetails && (
         <table>
           <tbody>
@@ -53,10 +53,10 @@ const Blog = ({ blog, updateBlog, removeBlog, user }) => {
               <td>URl: {blog.url}</td>
             </tr>
             {blog.user.id ===
-              JSON.parse(window.localStorage.getItem("appUser")).id && (
+              JSON.parse(window.localStorage.getItem('appUser')).id && (
               <tr>
                 <td>
-                  <DeleteButton handleDelete={handleDelete} text={"remove"} />
+                  <DeleteButton handleDelete={handleDelete} text={'remove'} />
                 </td>
               </tr>
             )}
@@ -64,7 +64,7 @@ const Blog = ({ blog, updateBlog, removeBlog, user }) => {
         </table>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default Blog;
+export default Blog

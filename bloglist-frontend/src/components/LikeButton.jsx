@@ -3,7 +3,7 @@ const LikeButton = ({ handleLikes }) => {
     <>
       <button onClick={handleLikes}>like</button>
     </>
-  );
-};
+  )
+}
 
-export default LikeButton;
+export default LikeButton

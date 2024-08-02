@@ -3,7 +3,7 @@ const ShowButton = ({ handleClick, text }) => {
     <>
       <button onClick={handleClick}>{text}</button>
     </>
-  );
-};
+  )
+}
 
-export default ShowButton;
+export default ShowButton
