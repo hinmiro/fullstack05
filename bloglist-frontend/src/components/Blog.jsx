@@ -12,9 +12,13 @@ const Blog = ({ blog, updateBlog, removeBlog, user }) => {
   }
 
   const handleLikes = async () => {
-    const updatedBlog = await blogService.addLike(blog)
-    updatedBlog.user = blog.user
-    updateBlog(updatedBlog)
+    try {
+      const updatedBlog = await blogService.addLike(blog)
+      updatedBlog.user = blog.user
+      updateBlog(updatedBlog)
+    } catch (err) {
+      console.log('Error: ', err.message)
+    }
   }
 
   const handleDelete = async () => {

@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import Blog from '/src/components/Blog.jsx'
+import LikeButton from '../src/components/LikeButton.jsx'
 
 const blog = {
   id: '123asd',
@@ -75,4 +76,17 @@ test('blog to render url, likes, etc. after clicking more', async () => {
     screen.getByText((content) => content.includes('Likes: 1'))
   ).toBeInTheDocument()
   expect(screen.getByText('URl: asddsad')).toBeInTheDocument()
+})
+
+test('blog like button', async () => {
+  const mockHandler = vi.fn()
+
+  render(<LikeButton handleLikes={mockHandler} />)
+
+  const user = userEvent.setup()
+  const likeButton = screen.getByText('like')
+  await user.click(likeButton)
+  await user.click(likeButton)
+
+  expect(mockHandler).toHaveBeenCalledTimes(2)
 })
