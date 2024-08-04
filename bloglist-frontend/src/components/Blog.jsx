@@ -30,10 +30,26 @@ const Blog = ({ blog, updateBlog, removeBlog, user }) => {
 
   return (
     <div
-      style={{ border: 'solid', borderWidth: 1, padding: 10, width: '10rem' }}
+      className={blog}
+      style={{
+        border: 'solid',
+        borderWidth: 1,
+        padding: 10,
+        height: '1rem',
+        width: '15%',
+      }}
     >
-      {blog.title}
-      <ShowButton handleClick={handleShowDetails} text={'more'} />
+      <table>
+        <tbody>
+          <tr>
+            <td className={'blogAuthor'}>{`${blog.author}: `}</td>
+            <td className={'blogTitle'}>{`${blog.title}`}</td>
+            <td>
+              <ShowButton handleClick={handleShowDetails} text={'more'} />
+            </td>
+          </tr>
+        </tbody>
+      </table>
       {showDetails && (
         <table>
           <tbody>
