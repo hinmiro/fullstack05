@@ -67,8 +67,6 @@ test('blog to render url, likes, etc. after clicking more', async () => {
   const button = screen.getByText('more')
   await user.click(button)
 
-  screen.debug()
-
   expect(screen.getByText('Title: Test blog')).toBeInTheDocument()
   expect(screen.getByText('Author: tester')).toBeInTheDocument()
 

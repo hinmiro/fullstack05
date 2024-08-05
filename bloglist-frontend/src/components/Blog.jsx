@@ -39,7 +39,6 @@ const Blog = ({ blog, updateBlog, removeBlog, user }) => {
         border: 'solid',
         borderWidth: 1,
         padding: 10,
-        height: '1rem',
         width: '15%',
       }}
     >

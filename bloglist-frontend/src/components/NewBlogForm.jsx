@@ -5,15 +5,7 @@ const NewBlogForm = (props) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
-  const {
-    blogs,
-    setBlogs,
-    user,
-    setUser,
-    setMessage,
-    setRed,
-    toggleVisibility,
-  } = props
+  const { handleBlogCreate, setUser } = props
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('appUser')
@@ -24,32 +16,10 @@ const NewBlogForm = (props) => {
     }
   }, [setUser])
 
-  const handleBlogCreate = async (evt) => {
+  const onSubmit = async (evt) => {
     evt.preventDefault()
-    try {
-      const newBlog = { title: title, author: author, url: url }
-      const createdBlog = await blogService.createNewBlog(newBlog)
-      const newBlogs = blogs.concat(createdBlog)
-      const updatedUser = { ...user, blogs: newBlogs }
-      setBlogs(newBlogs)
-      setUser(updatedUser)
-      window.localStorage.setItem('appUser', JSON.stringify(updatedUser))
-      setTitle('')
-      setAuthor('')
-      setUrl('')
-      setMessage(`New blog created, ${newBlog.title}`)
-      toggleVisibility()
-      setTimeout(() => {
-        setMessage(null)
-      }, 3000)
-    } catch (err) {
-      setMessage('Error occurred making a new blog')
-      setRed(true)
-      setTimeout(() => {
-        setMessage(null)
-        setRed(false)
-      }, 3000)
-    }
+    const newBlog = { title, author, url }
+    await handleBlogCreate(newBlog)
   }
 
   return (
@@ -57,26 +27,29 @@ const NewBlogForm = (props) => {
       <br />
       <br />
       <h3>Create new blog</h3>
-      <form onSubmit={handleBlogCreate}>
+      <form onSubmit={onSubmit}>
         <div>
-          Title:
+          <label>Title:</label>
           <input
+            aria-label={'Title:'}
             type={'text'}
             value={title}
             onChange={({ target }) => setTitle(target.value)}
           />
         </div>
         <div>
-          Author:
+          <label>Author:</label>
           <input
+            aria-label={'Author:'}
             type={'text'}
             value={author}
             onChange={({ target }) => setAuthor(target.value)}
           />
         </div>
         <div>
-          Url:
+          <label>Url:</label>
           <input
+            aria-label={'Url:'}
             type={'text'}
             value={url}
             onChange={({ target }) => setUrl(target.value)}

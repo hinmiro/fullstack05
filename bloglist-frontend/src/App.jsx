@@ -29,6 +29,29 @@ const App = () => {
     setUser(parseUser)
   }, [])
 
+  const handleBlogCreate = async (newBlog) => {
+    try {
+      const createdBlog = await blogService.createNewBlog(newBlog)
+      const newBlogs = blogs.concat(createdBlog)
+      const updatedUser = { ...user, blogs: newBlogs }
+      setBlogs(newBlogs)
+      setUser(updatedUser)
+      window.localStorage.setItem('appUser', JSON.stringify(updatedUser))
+      setMessage(`New blog created, ${newBlog.title}`)
+      toggleableFromRef.current.toggleVisibility()
+      setTimeout(() => {
+        setMessage(null)
+      }, 3000)
+    } catch (err) {
+      setMessage('Error occurred making a new blog')
+      setRed(true)
+      setTimeout(() => {
+        setMessage(null)
+        setRed(false)
+      }, 3000)
+    }
+  }
+
   return (
     <div>
       <Notification message={message} red={red} />
@@ -45,17 +68,7 @@ const App = () => {
       <br />
       {user && (
         <Toggleable buttonLabel={'new blog'} ref={toggleableFromRef}>
-          <NewBlogForm
-            blogs={blogs}
-            setBlogs={setBlogs}
-            user={user}
-            setUser={setUser}
-            setMessage={setMessage}
-            setRed={setRed}
-            toggleVisibility={() =>
-              toggleableFromRef.current.toggleVisibility()
-            }
-          />
+          <NewBlogForm handleBlogCreate={handleBlogCreate} setUser={setUser} />
         </Toggleable>
       )}
 
