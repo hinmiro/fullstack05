@@ -30,7 +30,6 @@ test('new blog create to call eventhandler from props', async () => {
   await user.type(inputAuthor, newBlog.author)
   await user.type(inputUrl, newBlog.url)
   await user.click(submitButton)
-  console.log(inputUrl.value)
 
   expect(mockHandler).toHaveBeenCalledWith(newBlog)
 })

@@ -12,7 +12,7 @@ describe("blog app", () => {
         password: "salainen",
       },
     });
-    await page.goto("http://localhost:5173");
+    await page.goto("http://localhost:5174");
   });
 
   test("Login form is shown", async ({ page }) => {
@@ -25,9 +25,9 @@ describe("blog app", () => {
   });
 
   test("Login works", async ({ page }) => {
-    const userInput = page.locator('input[name="Username"]');
-    const passInput = page.locator('input[name="Password"]');
-    const loginButton = await page.getByRole("button", { name: "login" });
+    const userInput = await page.locator("#usernameId");
+    const passInput = await page.locator("#passwordId");
+    const loginButton = await page.locator("#loginButtonId");
 
     await userInput.fill("mluukkai");
     await passInput.fill("salainen");
@@ -36,13 +36,24 @@ describe("blog app", () => {
   });
 
   test("failed login", async ({ page }) => {
-    const userInput = page.locator('input[name="Username"]');
-    const passInput = page.locator('input[name="Password"]');
-    const loginButton = await page.getByRole("button", { name: "login" });
+    const userInput = await page.locator("#usernameId");
+    const passInput = await page.locator("#passwordId");
+    const loginButton = await page.locator("#loginButtonId");
 
     await userInput.fill("failed");
     await passInput.fill("attempt");
     await loginButton.click();
     await expect(page.getByText("Username or password is wrong")).toBeVisible();
+  });
+});
+
+// assignment 5.19
+describe("When logged in", () => {
+  beforeEach(async ({ page }) => {
+    // ...
+  });
+
+  test("a new blog can be created", async ({ page }) => {
+    // ...
   });
 });
