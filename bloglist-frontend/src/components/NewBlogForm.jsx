@@ -31,6 +31,7 @@ const NewBlogForm = (props) => {
         <div>
           <label>Title:</label>
           <input
+            id="titleInputId"
             aria-label={'Title:'}
             type={'text'}
             value={title}
@@ -40,6 +41,7 @@ const NewBlogForm = (props) => {
         <div>
           <label>Author:</label>
           <input
+            id="authorInputId"
             aria-label={'Author:'}
             type={'text'}
             value={author}
@@ -49,13 +51,16 @@ const NewBlogForm = (props) => {
         <div>
           <label>Url:</label>
           <input
+            id="urlInputId"
             aria-label={'Url:'}
             type={'text'}
             value={url}
             onChange={({ target }) => setUrl(target.value)}
           />
         </div>
-        <button type={'submit'}>Create</button>
+        <button id="submitBlogButton" type={'submit'}>
+          Create
+        </button>
       </form>
     </>
   )

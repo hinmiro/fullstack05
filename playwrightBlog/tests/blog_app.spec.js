@@ -12,7 +12,7 @@ describe("blog app", () => {
         password: "salainen",
       },
     });
-    await page.goto("http://localhost:5174");
+    await page.goto("http://localhost:5173");
   });
 
   test("Login form is shown", async ({ page }) => {
@@ -49,11 +49,29 @@ describe("blog app", () => {
 
 // assignment 5.19
 describe("When logged in", () => {
-  beforeEach(async ({ page }) => {
-    // ...
+  beforeEach(async ({ page, request }) => {
+    await request.post("http://localhost:3003/api/users", {
+      data: {
+        username: "mluukkai",
+        name: "Matti Luukkainen",
+        password: "salainen",
+      },
+    });
+    await page.goto("http://localhost:5173");
+    await page.locator("#usernameId").fill("mluukkai");
+    await page.locator("#passwordId").fill("salainen");
+    await page.locator("#loginButtonId").click();
   });
 
   test("a new blog can be created", async ({ page }) => {
-    // ...
+    await page.getByRole("button", { name: "new blog" }).click();
+
+    await page.locator("#titleInputId").fill("Something fishy");
+    await page.locator("#authorInputId").fill("mluukktest");
+    await page.locator("#urlInputId").fill("test url");
+
+    await page.locator("#submitBlogButton").click();
+
+    await expect(page.getByText("mluukktest")).toBeVisible();
   });
 });
