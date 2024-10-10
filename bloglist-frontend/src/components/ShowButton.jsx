@@ -1,7 +1,9 @@
 const ShowButton = ({ handleClick, text }) => {
   return (
     <>
-      <button onClick={handleClick}>{text}</button>
+      <button className="showMoreButton" onClick={handleClick}>
+        {text}
+      </button>
     </>
   )
 }

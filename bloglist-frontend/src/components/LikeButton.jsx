@@ -1,5 +1,9 @@
 const LikeButton = ({ handleLikes }) => {
-  return <button onClick={handleLikes}>like</button>
+  return (
+    <button className="likeButton" onClick={handleLikes}>
+      like
+    </button>
+  )
 }
 
 export default LikeButton

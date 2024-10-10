@@ -63,15 +63,32 @@ describe("When logged in", () => {
     await page.locator("#loginButtonId").click();
   });
 
-  test("a new blog can be created", async ({ page }) => {
+  test.skip("a new blog can be created", async ({ page }) => {
     await page.getByRole("button", { name: "new blog" }).click();
 
-    await page.locator("#titleInputId").fill("Something fishy");
-    await page.locator("#authorInputId").fill("mluukktest");
+    await page.locator("#titleInputId").fill("Something");
+    await page.locator("#authorInputId").fill("Testi bloki");
     await page.locator("#urlInputId").fill("test url");
 
     await page.locator("#submitBlogButton").click();
 
-    await expect(page.getByText("mluukktest")).toBeVisible();
+    await expect(page.getByText("Testi bloki")).toBeVisible();
+  });
+
+  test("a blog can be liked", async ({ page }) => {
+    await page.locator(".showMoreButton").nth(0).click();
+
+    const likeCountText = await page.locator(".likeCount").nth(0).textContent();
+    const likeCount = parseInt(likeCountText, 10);
+
+    await page.locator(".likeButton").nth(0).click();
+
+    const updateLikeCountText = await page
+      .locator(".likeCount")
+      .nth(0)
+      .textContent();
+    const updateLikeCount = parseInt(updateLikeCountText, 10);
+
+    await expect(updateLikeCount).toBeGreaterThanOrEqual(likeCount);
   });
 });

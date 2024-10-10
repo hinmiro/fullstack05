@@ -64,8 +64,13 @@ const Blog = ({ blog, updateBlog, removeBlog, user }) => {
             </tr>
             <tr>
               <td>
-                Likes: {blog.likes !== undefined ? blog.likes : 0}
-                <LikeButton handleLikes={handleLikes}>like</LikeButton>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <p style={{ display: 'flex' }}>Likes:</p>
+                  <p style={{ marginRight: '1rem' }} className="likeCount">
+                    {blog.likes !== undefined ? blog.likes : 0}
+                  </p>
+                  <LikeButton handleLikes={handleLikes}>like</LikeButton>
+                </div>
               </td>
             </tr>
             <tr>
