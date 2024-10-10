@@ -63,16 +63,16 @@ describe("When logged in", () => {
     await page.locator("#loginButtonId").click();
   });
 
-  test.skip("a new blog can be created", async ({ page }) => {
+  test("a new blog can be created", async ({ page }) => {
     await page.getByRole("button", { name: "new blog" }).click();
 
     await page.locator("#titleInputId").fill("Something");
-    await page.locator("#authorInputId").fill("Testi bloki");
+    await page.locator("#authorInputId").fill("TESTTESTTEST");
     await page.locator("#urlInputId").fill("test url");
 
     await page.locator("#submitBlogButton").click();
 
-    await expect(page.getByText("Testi bloki")).toBeVisible();
+    await expect(page.getByText("TESTTESTTEST")).toBeVisible();
   });
 
   test("a blog can be liked", async ({ page }) => {
@@ -90,5 +90,27 @@ describe("When logged in", () => {
     const updateLikeCount = parseInt(updateLikeCountText, 10);
 
     await expect(updateLikeCount).toBeGreaterThanOrEqual(likeCount);
+  });
+
+  test("for removing blog", async ({ page }) => {
+    await page.pause();
+    await page
+      .getByRole("row", { name: "TESTTESTTEST: Something more" })
+      .getByRole("button")
+      .click();
+    await page.pause();
+    const removeButton = page.getByRole("button", { name: "remove" });
+    await page.pause();
+    await removeButton.waitFor({ state: "visible" });
+    await page.pause();
+    await removeButton.click();
+    await page.pause();
+    page.once("dialog", async (dialog) => {
+      await page.pause();
+      await dialog.accept();
+    });
+    await page.pause();
+
+    await expect(page.getByText("TESTTESTTEST")).not.toBeVisible();
   });
 });

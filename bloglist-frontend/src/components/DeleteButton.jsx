@@ -3,7 +3,11 @@ import PropTypes from 'prop-types'
 const DeleteButton = ({ handleDelete, text }) => {
   return (
     <>
-      <button style={{ backgroundColor: 'salmon' }} onClick={handleDelete}>
+      <button
+        className="removeBlogButton"
+        style={{ backgroundColor: 'salmon' }}
+        onClick={handleDelete}
+      >
         {text}
       </button>
     </>
