@@ -93,23 +93,21 @@ describe("When logged in", () => {
   });
 
   test("for removing blog", async ({ page }) => {
-    await page.pause();
     await page
       .getByRole("row", { name: "TESTTESTTEST: Something more" })
       .getByRole("button")
       .click();
-    await page.pause();
-    const removeButton = page.getByRole("button", { name: "remove" });
-    await page.pause();
-    await removeButton.waitFor({ state: "visible" });
-    await page.pause();
-    await removeButton.click();
-    await page.pause();
+
     page.once("dialog", async (dialog) => {
-      await page.pause();
       await dialog.accept();
     });
-    await page.pause();
+
+    const removeButton = page.getByRole("button", { name: "remove" });
+    await removeButton.click();
+
+    page.once("dialog", async (dialog) => {
+      await dialog.accept();
+    });
 
     await expect(page.getByText("TESTTESTTEST")).not.toBeVisible();
   });
