@@ -104,11 +104,23 @@ describe("When logged in", () => {
 
     const removeButton = page.getByRole("button", { name: "remove" });
     await removeButton.click();
-
-    page.once("dialog", async (dialog) => {
-      await dialog.accept();
-    });
+    await page.waitForTimeout(600);
 
     await expect(page.getByText("TESTTESTTEST")).not.toBeVisible();
+  });
+
+  test("to person who added blog is only one who can remove it", async ({
+    page,
+  }) => {
+    await page.goto("http://localhost:5173");
+    await page.locator("#usernameId").click();
+    await page.locator("#usernameId").fill("mluukkai");
+    await page.locator("#passwordId").click();
+    await page.locator("#passwordId").fill("salainen");
+    await page.getByRole("button", { name: "login" }).click();
+    await page.getByRole("row").nth(0).getByRole("button").click();
+    await expect(
+      page.getByRole("button", { name: "remove" }),
+    ).not.toBeVisible();
   });
 });
