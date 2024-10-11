@@ -33,15 +33,7 @@ const Blog = ({ blog, updateBlog, removeBlog, user }) => {
   }
 
   return (
-    <div
-      className={blog}
-      style={{
-        border: 'solid',
-        borderWidth: 1,
-        padding: 10,
-        width: '15%',
-      }}
-    >
+    <>
       <table>
         <tbody>
           <tr>
@@ -87,7 +79,7 @@ const Blog = ({ blog, updateBlog, removeBlog, user }) => {
           </tbody>
         </table>
       )}
-    </div>
+    </>
   )
 }
 

@@ -1,17 +1,17 @@
 import { test, expect } from "@playwright/test";
 
-const { describe, beforeEach } = test;
+const { describe, beforeEach, afterAll } = test;
 
-describe("blog app", () => {
+describe.serial("blog app", () => {
   beforeEach(async ({ page, request }) => {
     await request.post("http:localhost:3003/api/testing/reset");
-    await request.post("http://localhost:3003/api/users", {
-      data: {
-        username: "mluukkai",
-        name: "Matti Luukkainen",
-        password: "salainen",
-      },
-    });
+    /*await request.post("http://localhost:3003/api/users", {
+                      data: {
+                        username: "mluukkai",
+                        name: "Matti Luukkainen",
+                        password: "salainen",
+                      },
+                    });*/
     await page.goto("http://localhost:5173");
   });
 
@@ -48,7 +48,7 @@ describe("blog app", () => {
 });
 
 // assignment 5.19
-describe("When logged in", () => {
+describe.serial("When logged in", () => {
   beforeEach(async ({ page, request }) => {
     await request.post("http://localhost:3003/api/users", {
       data: {
@@ -69,7 +69,6 @@ describe("When logged in", () => {
     await page.locator("#titleInputId").fill("Something");
     await page.locator("#authorInputId").fill("TESTTESTTEST");
     await page.locator("#urlInputId").fill("test url");
-
     await page.locator("#submitBlogButton").click();
 
     await expect(page.getByText("TESTTESTTEST")).toBeVisible();
@@ -93,18 +92,18 @@ describe("When logged in", () => {
   });
 
   test("for removing blog", async ({ page }) => {
+    page.once("dialog", async (dialog) => {
+      await dialog.accept();
+    });
+
     await page
       .getByRole("row", { name: "TESTTESTTEST: Something more" })
       .getByRole("button")
       .click();
 
-    page.once("dialog", async (dialog) => {
-      await dialog.accept();
-    });
-
     const removeButton = page.getByRole("button", { name: "remove" });
     await removeButton.click();
-    await page.waitForTimeout(600);
+    await page.waitForTimeout(1000);
 
     await expect(page.getByText("TESTTESTTEST")).not.toBeVisible();
   });
@@ -122,5 +121,61 @@ describe("When logged in", () => {
     await expect(
       page.getByRole("button", { name: "remove" }),
     ).not.toBeVisible();
+  });
+
+  test("for blogs are ordered by likes", async ({ page }) => {
+    await page.getByRole("button", { name: "new blog" }).click();
+
+    await page.locator("#titleInputId").fill("kokeilu");
+    await page.locator("#authorInputId").fill("kokeilija2");
+    await page.locator("#urlInputId").fill("asdasd");
+    await page.locator("#submitBlogButton").click();
+
+    await page
+      .getByRole("row", { name: "kokeilija2: kokeilu" })
+      .getByRole("button")
+      .click();
+    await page.pause();
+    await page.getByRole("button", { name: "like" }).click();
+    await page.pause();
+    await page.waitForSelector("#blogsTableId tr");
+
+    const rows = await page.locator("#blogsTableId tr");
+    await page.pause();
+    const secondLastRow = rows.nth(-8);
+
+    await expect(secondLastRow).toContainText("kokeilija2: kokeilu");
+  });
+
+  // Clean up for the created blog
+  afterAll(async ({ browser }) => {
+    const context = await browser.newContext();
+    const page = await context.newPage();
+    await page.goto("http://localhost:5173");
+
+    await page.goto("http://localhost:5173");
+    await page.locator("#usernameId").click();
+    await page.locator("#usernameId").fill("mluukkai");
+    await page.locator("#passwordId").click();
+    await page.locator("#passwordId").fill("salainen");
+    await page.getByRole("button", { name: "login" }).click();
+
+    await page.waitForSelector(`text=kokeilija2: kokeilu`);
+
+    await page
+      .getByRole("row", { name: "kokeilija2: kokeilu" })
+      .getByRole("button")
+      .click();
+
+    page.once("dialog", async (dialog) => {
+      await dialog.accept();
+    });
+
+    await page.waitForSelector("button", { name: "remove" });
+
+    const removeButton = page.getByRole("button", { name: "remove" });
+    await removeButton.click();
+
+    await context.close();
   });
 });

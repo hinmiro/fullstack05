@@ -34,15 +34,26 @@ const BlogForm = ({ user, setUser, blogs, setBlogs }) => {
       </p>
       <br />
       <br />
-      {(Array.isArray(blogs) ? blogs : []).map((blog) => (
-        <Blog
-          key={blog.id}
-          blog={blog}
-          updateBlog={updateBlog}
-          removeBlog={removeBlog}
-          user={user}
-        />
-      ))}
+      <table
+        id="blogsTableId"
+        style={{ border: '1px solid black', borderCollapse: 'collapse' }}
+      >
+        <tbody>
+          {(Array.isArray(blogs) ? blogs : []).map((blog) => (
+            <tr key={blog.id} style={{ border: '1px solid black' }}>
+              <td>
+                <Blog
+                  key={blog.id}
+                  blog={blog}
+                  updateBlog={updateBlog}
+                  removeBlog={removeBlog}
+                  user={user}
+                />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </>
   )
 }
